@@ -9,17 +9,13 @@ const debug = debugLib('ImageDrBoxComponent:log');
 class ImageDrBoxComponent extends React.Component {
 
   getCntStyle() {
-    if (!this.hasImage()) return {};
-    return {backgroundImage: `url(${this.props.files[0].preview})`};
+    if (!this.props.uploadedFile) return {};
+    return {backgroundImage: `url(${this.props.uploadedFile.preview})`};
   }
 
   getHint() {
-    if (this.hasImage()) return null;
+    if (this.props.uploadedFile) return null;
     return <div>Try dropping some files here, or click to select files to upload.</div>;
-  }
-
-  hasImage() {
-    return this.props.files && this.props.files.length > 0;
   }
 
   render() {
@@ -34,7 +30,7 @@ class ImageDrBoxComponent extends React.Component {
 }
 
 ImageDrBoxComponent.propTypes = {
-  files: React.PropTypes.array.isRequired,
+  uploadedFile: React.PropTypes.object.isRequired,
   onDrop: React.PropTypes.func.isRequired,
 };
 

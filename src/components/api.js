@@ -61,6 +61,7 @@ const getImages = annotations => (
         if (err) return reject(err);
         return resolve(res.body.value.map(item => ({
           url: item.contentUrl,
+          thumbnailUrl: item.thumbnailUrl,
           contentSize: item.contentSize.replace(' B', ''),
         })));
       });

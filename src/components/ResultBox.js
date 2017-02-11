@@ -1,12 +1,10 @@
 import React from 'react';
 
-import './imageDropBox.less';
-
 class ResultBoxComponent extends React.Component {
 
   getCntStyle() {
-    if (!this.props.backgroundImage || !this.props.backgroundImage.url) return {};
-    return {backgroundImage: `url(${this.props.backgroundImage.url})`};
+    if (!this.props.backgroundImageObj || !this.props.backgroundImageObj.thumbnailUrl) return {};
+    return {backgroundImage: `url(${this.props.backgroundImageObj.thumbnailUrl})`};
   }
 
   render() {
@@ -19,12 +17,12 @@ class ResultBoxComponent extends React.Component {
 }
 
 ResultBoxComponent.propTypes = {
-  backgroundImage: React.PropTypes.object,
+  backgroundImageObj: React.PropTypes.object,
   className: React.PropTypes.string,
 };
 
 ResultBoxComponent.defaultProps = {
-  backgroundImage: null,
+  backgroundImageObj: null,
   className: '',
 };
 

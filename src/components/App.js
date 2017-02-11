@@ -4,6 +4,7 @@ import debugLib from 'debug';
 import BigBox from './BigBox';
 import ImageDropBox from './ImageDropBox';
 import ResultBox from './ResultBox';
+import SliderBox from './SliderBox';
 
 import './app.less';
 import Api from './api.js';
@@ -15,29 +16,36 @@ class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
+      uploadedFile: null,
       images: [],
       currentImage: null,
+      sliderValue: 3,
     };
   }
 
   onDrop(files) {
-    this.setState({ files }, () => {
-      debug('Accepted files: ', this.state.files);
-    });
-
+    const uploadedFile = files[0];
+    this.setState({ uploadedFile });
+    debug(uploadedFile);
     Api
-      .getBase64(files[0])
+      .getBase64(uploadedFile)
       .then(res => Api.getAnnotations(res.target.result))
       .then(annotations => Api.getImages(annotations))
       .then((images) => {
-        debug(images);
         this.setState({
           images,
-          currentImage: images[0],
+          currentImage: images[this.state.sliderValue],
         });
       })
       .catch(e => debug(e));
+  }
+
+  onSliderChange(e) {
+    const sliderValue = parseInt(e.target.value, 10);
+    this.setState({
+      sliderValue,
+      currentImage: this.state.images[sliderValue],
+    });
   }
 
   render() {
@@ -47,21 +55,23 @@ class AppComponent extends React.Component {
           <BigBox>
             <ImageDropBox
               onDrop={files => this.onDrop(files)}
-              files={this.state.files}
+              uploadedFile={this.state.uploadedFile}
             />
           </BigBox>
           <BigBox>
             <ResultBox
               className="cnt"
-              backgroundImage={this.state.currentImage}
+              backgroundImageObj={this.state.currentImage}
               />
           </BigBox>
         </div>
-        <div className="bottom-cnt">
-          {this.state.images.length > 0 && this.state.images.map(image => (
-            <img alt="no" src={image.thumbnailUrl} />
-          ))}
-        </div>
+        {this.state.currentImage && <div className="bottom-cnt">
+          <SliderBox
+            onSliderChange={e => this.onSliderChange(e)}
+            sliderValue={this.state.sliderValue}
+          />
+          <a href={this.state.currentImage.url} download>SAVE</a>
+        </div>}
       </div>
     );
   }
