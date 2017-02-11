@@ -1,0 +1,9 @@
+{
+  "generator-react-webpack": {
+    "appName": "image-size-slayer",
+    "style": "less",
+    "cssmodules": true,
+    "postcss": false,
+    "generatedWithVersion": 4
+  }
+}
