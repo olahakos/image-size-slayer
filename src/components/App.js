@@ -21,7 +21,16 @@ class AppComponent extends React.Component {
     this.setState({ files }, () => {
       debug('Accepted files: ', this.state.files);
     });
-    Api.getBase64(files[0]);
+
+    Api
+      .getBase64(files[0])
+      .then((res) => {
+        debug('APPPPPPP', res.target.result);
+        return Api.getAnnotations(res.target.result);
+      })
+      .then((annotations) => {
+        debug(annotations);
+      });
   }
 
   render() {
