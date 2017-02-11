@@ -10,8 +10,8 @@ class SliderBoxComponent extends React.Component {
         className="slider"
         type="range"
         onChange={this.props.onSliderChange}
-        min="1"
-        max="5"
+        min={this.props.min}
+        max={this.props.max}
         step="1"
         value={this.props.sliderValue}
         />
@@ -22,6 +22,8 @@ class SliderBoxComponent extends React.Component {
 SliderBoxComponent.propTypes = {
   onSliderChange: React.PropTypes.func.isRequired,
   sliderValue: React.PropTypes.number.isRequired,
+  min: React.PropTypes.number.isRequired,
+  max: React.PropTypes.number.isRequired,
 };
 
 export default SliderBoxComponent;

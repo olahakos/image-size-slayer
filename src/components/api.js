@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import debugLib from 'debug';
 import request from 'superagent';
 
@@ -52,18 +53,28 @@ const getBase64 = file => (
   })
 );
 
-const getImages = annotations => (
+const getImages = (annotations, maxSize) => (
   new Promise((resolve, reject) => {
-    const url = `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${encodeURI(annotations.join('+').slice(0, 5))}`;
+    const url = `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${encodeURI(annotations.slice(0, 5).join('+'))}`;
+    debug('Image REQ url:', url);
     request.get(url)
       .set('Ocp-Apim-Subscription-Key', config.bing_api_key)
       .end((err, res) => {
         if (err) return reject(err);
-        return resolve(res.body.value.map(item => ({
-          url: item.contentUrl,
-          thumbnailUrl: item.thumbnailUrl,
-          contentSize: item.contentSize.replace(' B', ''),
-        })));
+        const images = res.body.value
+          .map(item => ({
+            url: item.contentUrl,
+            thumbnailUrl: item.thumbnailUrl,
+            contentSize: parseInt(item.contentSize.replace(' B', ''), 10),
+          }))
+          .filter(item => (item.contentSize < maxSize));
+        const sortedImages = _.sortBy(images, i => i.contentSize);
+        const arr = [
+          sortedImages[0],
+          sortedImages[Math.floor(sortedImages.length / 2)],
+          sortedImages[sortedImages.length - 1],
+        ];
+        return resolve(arr);
       });
   })
 );

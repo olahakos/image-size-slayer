@@ -19,7 +19,9 @@ class AppComponent extends React.Component {
       uploadedFile: null,
       images: [],
       currentImage: null,
-      sliderValue: 3,
+      sliderValue: 1,
+      min: 0,
+      max: 2,
     };
   }
 
@@ -30,7 +32,10 @@ class AppComponent extends React.Component {
     Api
       .getBase64(uploadedFile)
       .then(res => Api.getAnnotations(res.target.result))
-      .then(annotations => Api.getImages(annotations))
+      .then((annotations) => {
+        debug(annotations);
+        return Api.getImages(annotations, uploadedFile.size, this.state.max);
+      })
       .then((images) => {
         this.setState({
           images,
@@ -68,6 +73,8 @@ class AppComponent extends React.Component {
         {this.state.currentImage && <div className="bottom-cnt">
           <SliderBox
             onSliderChange={e => this.onSliderChange(e)}
+            min={this.state.min}
+            max={this.state.max}
             sliderValue={this.state.sliderValue}
           />
           <a href={this.state.currentImage.url} download>SAVE</a>

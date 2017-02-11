@@ -1,10 +1,17 @@
+@grey1: #EBEBF0;
+@grey2: #C3C3C8;
+@grey3: #96969B;
+@grey4: #707075;
+@grey5: #505055;
+@grey6: #323237;
+
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   color: #fff;
-  background: #222;
+  background: @grey6;
 }
 
 .index {
@@ -17,14 +24,14 @@ body {
   width: 100%;
 
   .upper-cnt {
-    background-color: blue;
+    background-color: @grey6;
     display: flex;
     flex-grow: 2;
     height: 70%;
   }
   .bottom-cnt {
     flex-grow: 1;
-    background-color: pink;
+    background-color: @grey6;
     height: 30%;
     display: flex;
     flex-direction: column;

@@ -30,8 +30,11 @@ class ImageDrBoxComponent extends React.Component {
 }
 
 ImageDrBoxComponent.propTypes = {
-  uploadedFile: React.PropTypes.object.isRequired,
+  uploadedFile: React.PropTypes.object,
   onDrop: React.PropTypes.func.isRequired,
+};
+ImageDrBoxComponent.defaultProps = {
+  uploadedFile: null,
 };
 
 export default ImageDrBoxComponent;
