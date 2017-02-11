@@ -23,6 +23,7 @@ class AppComponent extends React.Component {
       sliderValue: 1,
       min: 0,
       max: 2,
+      showSpinner: false,
     };
   }
 
@@ -30,6 +31,7 @@ class AppComponent extends React.Component {
     const uploadedFile = files[0];
     this.setState({ uploadedFile });
     debug(uploadedFile);
+    this.setState({ showSpinner: true });
     Api
       .getBase64(uploadedFile)
       .then(res => Api.getAnnotations(res.target.result))
@@ -41,6 +43,7 @@ class AppComponent extends React.Component {
         this.setState({
           images,
           currentImage: images[this.state.sliderValue],
+          showSpinner: false,
         });
       })
       .catch(e => debug(e));
@@ -72,6 +75,7 @@ class AppComponent extends React.Component {
             <ResultBox
               className="cnt resultBox"
               backgroundImageObj={this.state.currentImage}
+              showSpinner={this.state.showSpinner}
               />
             {this.state.currentImage && <div className="file-size">
               File Size: <span>{humanize.filesize(this.state.currentImage.contentSize)}</span>

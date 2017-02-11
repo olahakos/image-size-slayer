@@ -1,10 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import debugLib from 'debug';
 
 import './imageDropBox.less';
-
-const debug = debugLib('ImageDrBoxComponent:log');
 
 class ImageDrBoxComponent extends React.Component {
 
