@@ -8,24 +8,9 @@ const debug = debugLib('ImageDrBoxComponent:log');
 
 class ImageDrBoxComponent extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = { files: [] };
-  }
-
-  onDrop(files) {
-    this.setState({ files }, () => {
-      debug('Accepted files: ', this.state.files);
-    });
-  }
-
-  hasImage() {
-    return this.state.files && this.state.files.length > 0;
-  }
-
   getCntStyle() {
     if (!this.hasImage()) return {};
-    return {backgroundImage: `url(${this.state.files[0].preview})`};
+    return {backgroundImage: `url(${this.props.files[0].preview})`};
   }
 
   getHint() {
@@ -33,10 +18,14 @@ class ImageDrBoxComponent extends React.Component {
     return <div>Try dropping some files here, or click to select files to upload.</div>;
   }
 
+  hasImage() {
+    return this.props.files && this.props.files.length > 0;
+  }
+
   render() {
     return (
       <div className="cnt imageDropBox" style={this.getCntStyle()}>
-        <Dropzone className="imageDropBox_dropbox" onDrop={files => this.onDrop(files)}>
+        <Dropzone className="imageDropBox_dropbox" onDrop={this.props.onDrop}>
           {this.getHint()}
         </Dropzone>
       </div>
@@ -44,8 +33,9 @@ class ImageDrBoxComponent extends React.Component {
   }
 }
 
-ImageDrBoxComponent.defaultProps = {
-  children: React.PropTypes.element.isRequired,
+ImageDrBoxComponent.propTypes = {
+  files: React.PropTypes.array.isRequired,
+  onDrop: React.PropTypes.func.isRequired,
 };
 
 export default ImageDrBoxComponent;
