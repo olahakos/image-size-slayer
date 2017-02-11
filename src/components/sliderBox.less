@@ -1,8 +1,21 @@
+@grey3: #96969B;
 .bottom-cnt {
   display: flex;
   justify-content: center;
-  .slider {
-    width: 70%;
-    margin: 30px auto;
+  .slider-cnt {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .slider {
+      width: 70%;
+      margin: 0px auto;
+    }
+    .labels {
+      color: @grey3;
+      display: flex;
+      width: 70%;
+      margin: 5px auto;
+      justify-content: space-between;
+    }
   }
 }

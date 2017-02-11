@@ -15,7 +15,7 @@ class ImageDrBoxComponent extends React.Component {
 
   getHint() {
     if (this.props.uploadedFile) return null;
-    return <div>Try dropping some files here, or click to select files to upload.</div>;
+    return <div className="hint">Drop an image here, or click to select image to upload.</div>;
   }
 
   render() {

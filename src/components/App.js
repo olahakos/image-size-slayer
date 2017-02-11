@@ -1,5 +1,6 @@
 import React from 'react';
 import debugLib from 'debug';
+import humanize from 'humanize';
 
 import BigBox from './BigBox';
 import ImageDropBox from './ImageDropBox';
@@ -56,29 +57,39 @@ class AppComponent extends React.Component {
   render() {
     return (
       <div className="index">
+        <h1>Save for web</h1>
         <div className="upper-cnt">
           <BigBox>
             <ImageDropBox
               onDrop={files => this.onDrop(files)}
               uploadedFile={this.state.uploadedFile}
             />
+            {this.state.uploadedFile && <div className="file-size">
+              File Size: <span>{humanize.filesize(this.state.uploadedFile.size)}</span>
+            </div>}
           </BigBox>
           <BigBox>
             <ResultBox
-              className="cnt"
+              className="cnt resultBox"
               backgroundImageObj={this.state.currentImage}
               />
+            {this.state.currentImage && <div className="file-size">
+              File Size: <span>{humanize.filesize(this.state.currentImage.contentSize)}</span>
+            </div>}
           </BigBox>
         </div>
-        {this.state.currentImage && <div className="bottom-cnt">
-          <SliderBox
+        <div className="bottom-cnt">
+          {this.state.currentImage && <SliderBox
             onSliderChange={e => this.onSliderChange(e)}
             min={this.state.min}
             max={this.state.max}
             sliderValue={this.state.sliderValue}
-          />
-          <a href={this.state.currentImage.url} download>SAVE</a>
-        </div>}
+          />}
+          {this.state.currentImage &&
+            <a className="save-btn" href={this.state.currentImage.url} download>
+              Save Image
+            </a>}
+        </div>
       </div>
     );
   }

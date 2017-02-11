@@ -6,15 +6,22 @@ class SliderBoxComponent extends React.Component {
 
   render() {
     return (
-      <input
-        className="slider"
-        type="range"
-        onChange={this.props.onSliderChange}
-        min={this.props.min}
-        max={this.props.max}
-        step="1"
-        value={this.props.sliderValue}
+      <div className="slider-cnt">
+        <input
+          className="slider"
+          type="range"
+          onChange={this.props.onSliderChange}
+          min={this.props.min}
+          max={this.props.max}
+          step="1"
+          value={this.props.sliderValue}
         />
+        <div className="labels">
+          <div>Small</div>
+          <div>Medium</div>
+          <div>Large</div>
+        </div>
+      </div>
     );
   }
 }
