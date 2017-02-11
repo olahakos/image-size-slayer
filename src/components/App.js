@@ -1,21 +1,38 @@
 import React from 'react';
-// import debugLib from 'debug';
+import debugLib from 'debug';
 
 import BigBox from './BigBox';
 import ImageDropBox from './ImageDropBox';
-
-// import YeomanImage from './YeomanImage';
 import './app.less';
-// const debug = debugLib('AppComponent:log');
+import Api from './api.js';
+
+const debug = debugLib('slayer:AppComponent:log');
 
 class AppComponent extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      files: []
+    };
+  }
+
+  onDrop(files) {
+    this.setState({ files }, () => {
+      debug('Accepted files: ', this.state.files);
+    });
+    Api.getBase64(files[0]);
+  }
 
   render() {
     return (
       <div className="index">
         <div className="upper-cnt">
           <BigBox>
-            <ImageDropBox />
+            <ImageDropBox
+              onDrop={files => this.onDrop(files)}
+              files={this.state.files}
+            />
           </BigBox>
           <BigBox>
             <div className="cnt">THIS IS THE OUTPUT</div>

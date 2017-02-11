@@ -27,6 +27,7 @@
           "styles/",
           "images/"
         ]
-    }]
+    }],
+    "react/forbid-prop-types": ["off"]
   }
 }
