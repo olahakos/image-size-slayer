@@ -3,6 +3,8 @@ import debugLib from 'debug';
 
 import BigBox from './BigBox';
 import ImageDropBox from './ImageDropBox';
+import ResultBox from './ResultBox';
+
 import './app.less';
 import Api from './api.js';
 
@@ -13,7 +15,9 @@ class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: []
+      files: [],
+      images: [],
+      currentImage: null,
     };
   }
 
@@ -24,13 +28,16 @@ class AppComponent extends React.Component {
 
     Api
       .getBase64(files[0])
-      .then((res) => {
-        debug('APPPPPPP', res.target.result);
-        return Api.getAnnotations(res.target.result);
+      .then(res => Api.getAnnotations(res.target.result))
+      .then(annotations => Api.getImages(annotations))
+      .then((images) => {
+        debug(images);
+        this.setState({
+          images,
+          currentImage: images[0],
+        });
       })
-      .then((annotations) => {
-        debug(annotations);
-      });
+      .catch(e => debug(e));
   }
 
   render() {
@@ -44,10 +51,17 @@ class AppComponent extends React.Component {
             />
           </BigBox>
           <BigBox>
-            <div className="cnt">THIS IS THE OUTPUT</div>
+            <ResultBox
+              className="cnt"
+              backgroundImage={this.state.currentImage}
+              />
           </BigBox>
         </div>
-        <div className="bottom-cnt">SLIDER</div>
+        <div className="bottom-cnt">
+          {this.state.images.length > 0 && this.state.images.map(image => (
+            <img alt="no" src={image.thumbnailUrl} />
+          ))}
+        </div>
       </div>
     );
   }

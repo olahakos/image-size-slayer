@@ -4,8 +4,6 @@ import request from 'superagent';
 import config from '../../conf/config';
 
 const debug = debugLib('slayer:api:log');
-const debugErr = debugLib('slayer:api:error');
-const fileReader = new FileReader();
 
 function getAnnotations(base64) {
   const url = 'https://vision.googleapis.com/v1/images:annotate?key=';
@@ -31,20 +29,46 @@ function getAnnotations(base64) {
       .send(req)
       .end((err, res) => {
         if (err) return reject(err);
-        return resolve(res);
+        if (!res ||
+          !res.body ||
+          !res.body.responses ||
+          !res.body.responses.length ||
+          !res.body.responses[0].labelAnnotations
+        ) return reject('shit response');
+
+        return resolve(
+          res.body.responses[0].labelAnnotations
+            .map(annotation => annotation.description
+          ));
       });
   });
 }
 
 const getBase64 = file => (
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const fr = new FileReader();
     fr.readAsDataURL(file);
     fr.onloadend = resolve;
   })
 );
 
+const getImages = annotations => (
+  new Promise((resolve, reject) => {
+    const url = `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${encodeURI(annotations.join('+').slice(0, 5))}`;
+    request.get(url)
+      .set('Ocp-Apim-Subscription-Key', config.bing_api_key)
+      .end((err, res) => {
+        if (err) return reject(err);
+        return resolve(res.body.value.map(item => ({
+          url: item.contentUrl,
+          contentSize: item.contentSize.replace(' B', ''),
+        })));
+      });
+  })
+);
+
 module.exports = {
-  getBase64,
   getAnnotations,
+  getBase64,
+  getImages,
 };
