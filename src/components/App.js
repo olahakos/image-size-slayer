@@ -56,6 +56,12 @@ class AppComponent extends React.Component {
       currentImage: this.state.images[sliderValue],
     });
   }
+  onLabelClick(n) {
+    this.setState({
+      sliderValue: n,
+      currentImage: this.state.images[n],
+    });
+  }
 
   render() {
     return (
@@ -85,6 +91,7 @@ class AppComponent extends React.Component {
         <div className="bottom-cnt">
           {this.state.currentImage && <SliderBox
             onSliderChange={e => this.onSliderChange(e)}
+            onClick={n => this.onLabelClick(n)}
             min={this.state.min}
             max={this.state.max}
             sliderValue={this.state.sliderValue}

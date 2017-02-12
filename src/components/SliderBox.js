@@ -17,9 +17,9 @@ class SliderBoxComponent extends React.Component {
           value={this.props.sliderValue}
         />
         <div className="labels">
-          <div>Small</div>
-          <div>Medium</div>
-          <div>Large</div>
+          <a href="#small" onClick={() => this.props.onClick(0)}>Small</a>
+          <a href="#medium" onClick={() => this.props.onClick(1)}>Medium</a>
+          <a href="#large" onClick={() => this.props.onClick(2)}>Large</a>
         </div>
       </div>
     );
@@ -28,6 +28,7 @@ class SliderBoxComponent extends React.Component {
 
 SliderBoxComponent.propTypes = {
   onSliderChange: React.PropTypes.func.isRequired,
+  onClick: React.PropTypes.func.isRequired,
   sliderValue: React.PropTypes.number.isRequired,
   min: React.PropTypes.number.isRequired,
   max: React.PropTypes.number.isRequired,
